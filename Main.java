@@ -80,6 +80,11 @@ class DictionaryManagement {
 
 class DictionaryCommandLine extends DictionaryManagement {
 	DictionaryManagement dictionarymanagement = new DictionaryManagement();
+	
+	//Lay du lieu cho tu dien tu cmd
+    public void setDictionaryManagement(){
+        dictionarymanagement.insertFromCommandLine();
+    }
 
     //Lay du lieu tu text
     public void setTxtDictionaryManagement(){
