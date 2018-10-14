@@ -30,16 +30,10 @@ class Word {
     }
 }
 
-class Dictionary {
+class Dictionary 
+{
     ArrayList <Word> Words = new ArrayList();
-	private ArrayList<Word> list = new ArrayList();
-    public void setList(String word_target,String word_explain)
-    {
-        Word new_word = new Word(word_target,word_explain);
-        this.list.add(new_word);
-    }
-    public ArrayList<Word> getList(){
-        return list;
+	
 }
 
 class DictionaryManagement {
@@ -73,8 +67,9 @@ class DictionaryManagement {
                 B.Words.add(newWord);
             }
         }
-        catch (Exception e) {
-
+        catch (Exception e) 
+	{
+		System.out.println(e.getClass().getSimpleName() + " " + e.getMessage());
         }
     }
 
@@ -84,6 +79,12 @@ class DictionaryManagement {
 }
 
 class DictionaryCommandLine extends DictionaryManagement {
+	DictionaryManagement dictionarymanagement = new DictionaryManagement();
+
+    //Lay du lieu tu text
+    public void setTxtDictionaryManagement(){
+        dictionarymanagement.insertFromFile();
+    }
 	
 	//Ham hien thi du lieu tu dien ra man hinh
     public void showAllWords() {
@@ -97,6 +98,14 @@ class DictionaryCommandLine extends DictionaryManagement {
     public void dictionaryBasic() {
         this.insertFromCommandline();
         this.showAllWords();
+    }
+    public void dictionaryAdvanced() 
+	{
+    	Dictionary dictionary = new Dictionary();
+        DictionaryManagement input = new DictionaryManagement();     
+        input.insertFromFile();
+        input.dictionaryLookup();
+        
     }
 
 
