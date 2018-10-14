@@ -1,8 +1,8 @@
 package com.company;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
 
 class Word {
     private String word_target;
@@ -46,6 +46,7 @@ class DictionaryManagement {
     Dictionary A = new Dictionary();
 
     // Phien ban tu dien so khai
+	//Ham nhap du lieu tu dien bang ban phim
     public void insertFromCommandline() {
         Scanner One = new Scanner(System.in);
         System.out.println("Nhap so tu: ");
@@ -60,10 +61,10 @@ class DictionaryManagement {
         }
     }
 
+	//Ham nhạp du lieu tu dien tu tep
     public void insertFromFile() {
         Dictionary B = new Dictionary();
-        FileInputStream fis = new FileInputStream("C:\Dictionary1.txt");
-        try (Scanner Sc = new Scanner(fis)) {
+        try (Scanner Sc = new Scanner(new File("C:/Dictionary1.txt"))) {
             String Str0,Str1;
             while (Sc.hasNext()) {
                 Str0 = Sc.next();
@@ -83,7 +84,8 @@ class DictionaryManagement {
 }
 
 class DictionaryCommandLine extends DictionaryManagement {
-
+	
+	//Ham hien thi du lieu tu dien ra man hinh
     public void showAllWords() {
         int n = A.Words.size();
         System.out.println("No          |English            |Vietnamese" + "\n");
