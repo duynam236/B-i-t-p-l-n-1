@@ -32,6 +32,14 @@ class Word {
 
 class Dictionary {
     ArrayList <Word> Words = new ArrayList();
+	private ArrayList<Word> list = new ArrayList();
+    public void setList(String word_target,String word_explain)
+    {
+        Word new_word = new Word(word_target,word_explain);
+        this.list.add(new_word);
+    }
+    public ArrayList<Word> getList(){
+        return list;
 }
 
 class DictionaryManagement {
