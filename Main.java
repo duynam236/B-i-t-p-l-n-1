@@ -1,6 +1,7 @@
-package com.company;
+package btl1.java;
 
 import java.util.ArrayList;
+import java.io.FileWriter;
 import java.util.Scanner;
 import java.io.File;
 
@@ -30,35 +31,32 @@ class Word {
     }
 }
 
-class Dictionary 
-{
+class Dictionary {
     ArrayList <Word> Words = new ArrayList();
-	
 }
 
 class DictionaryManagement {
     Dictionary A = new Dictionary();
-
+    Dictionary B = new Dictionary();
     // Phien ban tu dien so khai
-	//Ham nhap du lieu tu dien bang ban phim
     public void insertFromCommandline() {
-        Scanner One = new Scanner(System.in);
+        Scanner Sc = new Scanner(System.in);
         System.out.println("Nhap so tu: ");
-        int n = One.nextInt();
+        int n = Sc.nextInt();
         for (int i=1;i<=n;i++) {
             System.out.println("Nhap tu tieng anh: ");
-            String Eword = One.nextLine();
+            String Eword = Sc.nextLine();
             System.out.println("Nhap tu tieng viet: ");
-            String Vword = One.nextLine();
+            String Vword = Sc.nextLine();
             Word newWord = new Word(Eword, Vword);
             A.Words.add(newWord);
         }
     }
 
-	//Ham nhạp du lieu tu dien tu tep
+    //Ham lay du lieu tu dien tu file
     public void insertFromFile() {
-        Dictionary B = new Dictionary();
-        try (Scanner Sc = new Scanner(new File("C:/Dictionary1.txt"))) {
+
+        try (Scanner Sc = new Scanner("C:/Dictionary1.txt")) {
             String Str0,Str1;
             while (Sc.hasNext()) {
                 Str0 = Sc.next();
@@ -67,36 +65,104 @@ class DictionaryManagement {
                 B.Words.add(newWord);
             }
         }
-        catch (Exception e) 
-	{
-		System.out.println(e.getClass().getSimpleName() + " " + e.getMessage());
+        catch (Exception e) {
+
         }
     }
 
+    //Ham tra cuu tu
     public void dictionaryLookup() {
+        Scanner Sc = new Scanner(System.in);
+        System.out.println("Nhap tu can tra: ");
+        String wordlookup = Sc.nextLine();
+        boolean Check=false;
+        for (int i=0;i<B.Words.size();i++) {
+            if (B.Words.get(i).getWord_target().compareTo(wordlookup)==0) {
+                System.out.println("Nghia cua tu can tra: " + B.Words.get(i).getWord_explain());
+                Check=true;
+                break;
+            }
+        }
+        if (Check==false)
+            System.out.println("Khong tim thay tu!");
+    }
+
+    //Ham them tu
+    public void addWord() {
+        Scanner Sc = new Scanner(System.in);
+        System.out.println("Nhap so tu can them: ");
+        int temp = Sc.nextInt();
+        for (int i=0;i<temp;i++) {
+            System.out.println("Nhap tu can them: ");
+            String newTarge = Sc.nextLine();
+            System.out.println("Nhap nghia cua tu: ");
+            String newExplain = Sc.nextLine();
+            Word newWord = new Word(newTarge, newExplain);
+            B.Words.add(newWord);
+        }
+    }
+
+    //Ham sua tu
+    public void editWord() {
+        Scanner Sc = new Scanner(System.in);
+        System.out.println("Nhap tu can sua: ");
+        String tempWord = Sc.nextLine();
+        int n = B.Words.size(),j=0;
+        for (int i=0;i<n;i++) {
+            if (B.Words.get(i).getWord_target().compareTo(tempWord)==0) {
+                B.Words.remove(B.Words.get(i));
+                j=i;
+                break;
+            }
+        }
+        System.out.println("Nhap tu can sua: ");
+        String newTarge = Sc.nextLine();
+        System.out.println("Nhap nghia cua tu: ");
+        String newExplain = Sc.nextLine();
+        Word newWord = new Word(newTarge, newExplain);
+        B.Words.add(j, newWord);
+    }
+
+    //Ham xoa tu
+    public void deleteWord() {
+        Scanner Sc = new Scanner(System.in);
+        System.out.println("Nhap tu can xoa: ");
+        String tempWord = Sc.nextLine();
+        int n = B.Words.size();
+        for (int i=0;i<n;i++) {
+            if (B.Words.get(i).getWord_target().compareTo(tempWord)==0) {
+                B.Words.remove(B.Words.get(i));
+                break;
+            }
+        }
+    }
+
+    //Ham ghi du lieu tu dien ra file
+    public void dictionaryExportToFile() {
+        Scanner Sc = new Scanner(System.in);
+        int n = B.Words.size();
+        System.out.println("Nhap ten file can ghi: ");
+        String Text = Sc.nextLine();
+        try (FileWriter Fw = new FileWriter(new File(Text))) {
+            for (int i=0;i<n;i++) {
+                Fw.write(B.Words.get(i).getWord_target() + "\t" + B.Words.get(i).getWord_explain() + "\n");
+            }
+            Fw.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
     }
+
 }
 
 class DictionaryCommandLine extends DictionaryManagement {
-	DictionaryManagement dictionarymanagement = new DictionaryManagement();
-	
-	//Lay du lieu cho tu dien tu cmd
-    public void setDictionaryManagement(){
-        dictionarymanagement.insertFromCommandLine();
-    }
 
-    //Lay du lieu tu text
-    public void setTxtDictionaryManagement(){
-        dictionarymanagement.insertFromFile();
-    }
-	
-	//Ham hien thi du lieu tu dien ra man hinh
     public void showAllWords() {
-        int n = A.Words.size();
+        int n = B.Words.size();
         System.out.println("No          |English            |Vietnamese" + "\n");
-        for (int i=1;i<=n;i++) {
-            System.out.println(i + "            |" + A.Words.get(i).getWord_target() + "            |" + A.Words.get(i).getWord_explain() +"\n");
+        for (int i=0;i<n;i++) {
+            System.out.println(i+1  + "            |" + B.Words.get(i).getWord_target() + "            |" + B.Words.get(i).getWord_explain() +"\n");
         }
     }
 
@@ -104,21 +170,25 @@ class DictionaryCommandLine extends DictionaryManagement {
         this.insertFromCommandline();
         this.showAllWords();
     }
-    public void dictionaryAdvanced() 
-	{
-    	Dictionary dictionary = new Dictionary();
-        DictionaryManagement input = new DictionaryManagement();     
-        input.insertFromFile();
-        input.dictionaryLookup();
-        
+
+    public void dictionaryAdvanced() {
+        insertFromFile();
+        showAllWords();
+        dictionaryAdvanced();
     }
 
+    public void dictionarySearcher() {
+
+    }
 
 }
 
-public class Main {
+public class BTL1Java {
 
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
-	// write your code here
+        // TODO code application logic here
     }
 }
