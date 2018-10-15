@@ -1,4 +1,4 @@
-package btl1.java;
+package btl1;
 
 import java.util.ArrayList;
 import java.io.FileWriter;
@@ -183,7 +183,7 @@ class DictionaryCommandLine extends DictionaryManagement {
 
 }
 
-public class BTL1Java {
+public class BTL1 {
 
     /**
      * @param args the command line arguments
